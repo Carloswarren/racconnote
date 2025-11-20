@@ -73,7 +73,10 @@ export const App: React.FC = () => {
   });
 
   const [activeDocId, setActiveDocId] = useState<string | null>(() => {
-      if (documents.length > 0) return documents[0].id;
+      if (documents.length > 0) {
+        // Try to preserve last open doc or default to first
+        return documents[0].id;
+      }
       return null;
   });
   
@@ -176,12 +179,12 @@ export const App: React.FC = () => {
           : `Delete empty folder "${folder.name}"?`;
 
       if (window.confirm(message)) {
-          // Move docs to root
+          // Move docs to root (null folderId)
           if (hasDocs) {
               setDocuments(docs => docs.map(d => d.folderId === folderId ? { ...d, folderId: null } : d));
           }
           // Delete folder
-          setFolders(folders.filter(f => f.id !== folderId));
+          setFolders(prev => prev.filter(f => f.id !== folderId));
       }
   };
 
@@ -215,13 +218,15 @@ export const App: React.FC = () => {
       if (!doc) return;
 
       if (documents.length <= 1) {
-          alert("You cannot delete the only document. Try renaming it or clearing its content instead.");
+          alert("You cannot delete the only document. Try clearing its content instead.");
           return;
       }
       
-      if (window.confirm(`Delete document "${doc.title || 'Untitled'}"? This cannot be undone.`)) {
+      if (window.confirm(`Delete document "${doc.title || 'Untitled'}"?`)) {
           const newDocs = documents.filter(d => d.id !== id);
           setDocuments(newDocs);
+          
+          // If we deleted the active doc, switch to another one
           if (activeDocId === id) {
               setActiveDocId(newDocs[0].id);
           }
@@ -274,7 +279,14 @@ export const App: React.FC = () => {
           : (activeDoc ? [activeDoc] : documents);
       
       if (options.mode === 'flashcards' && activeDoc && !options.specificCardIds) {
-          docsToStudy = [activeDoc];
+          // For flashcard mode defaulting to active doc context if not "study all"
+          if (options.mode === 'flashcards') {
+             // If triggered from global button usually means all, but let's respect context
+             // If triggered from sidebar "Flashcard Home", we usually want all.
+             // If triggered from within a doc, maybe just that doc?
+             // Current implementation of Sidebar "Study All" calls handleStartStudy({mode: 'all'})
+             // So if we are here with 'flashcards', it's likely from the dropdown menu in Editor.
+          }
       }
 
       let cards = extractCards(docsToStudy);
@@ -285,11 +297,12 @@ export const App: React.FC = () => {
       }
 
       if (cards.length === 0) {
-          alert("No flashcards found matching your criteria!");
+          alert("No flashcards found!");
           return;
       }
 
       if (options.mode !== 'order') {
+          // Shuffle
           for (let i = cards.length - 1; i > 0; i--) {
               const j = Math.floor(Math.random() * (i + 1));
               [cards[i], cards[j]] = [cards[j], cards[i]];
@@ -415,7 +428,10 @@ export const App: React.FC = () => {
             />
         ) : (
             <div className="flex items-center justify-center h-full text-gray-400">
-                Select a document or create a new one
+                <div className="text-center">
+                    <p className="mb-4">No document selected.</p>
+                    <button onClick={() => handleCreateDoc(null)} className="text-blue-600 hover:underline">Create a new document</button>
+                </div>
             </div>
         )}
       </div>

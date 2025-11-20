@@ -146,21 +146,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div className="flex items-center gap-1">
                 <button 
                     onClick={(e) => handleMoveClick(e, doc.id)}
-                    className={`p-1 rounded ${isMoving ? 'bg-blue-100 text-blue-600' : 'text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 hover:text-gray-600'}`}
+                    className={`p-1 rounded opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity ${isMoving ? 'bg-blue-100 text-blue-600 opacity-100' : 'text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 hover:text-gray-600'}`}
                     title="Move to Folder"
                 >
                     <ArrowRightCircle size={12} />
                 </button>
                 <button 
                     onClick={(e) => handleRenameClick(e, doc)}
-                    className="p-1 text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 hover:text-gray-600 rounded"
+                    className="p-1 text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 hover:text-gray-600 rounded opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                     title="Rename"
                 >
                     <Pencil size={12} />
                 </button>
                 <button 
                     onClick={(e) => { e.stopPropagation(); onDeleteDoc(doc.id); }}
-                    className="p-1 text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 rounded"
+                    className="p-1 text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500 rounded opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                     title="Delete"
                 >
                     <Trash2 size={12} />
@@ -244,21 +244,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
                          <div className="flex items-center gap-1 transition-opacity">
                              <button 
                                 onClick={(e) => handleRenameFolderClick(e, folder)} 
-                                className="text-gray-300 hover:text-gray-600 dark:hover:text-slate-200 p-0.5 hover:bg-gray-200 dark:hover:bg-slate-700 rounded"
+                                className="text-gray-300 hover:text-gray-600 dark:hover:text-slate-200 p-0.5 hover:bg-gray-200 dark:hover:bg-slate-700 rounded opacity-100 md:opacity-0 md:group-hover:opacity-100"
                                 title="Rename Folder"
                              >
                                  <Pencil size={12}/>
                              </button>
                              <button 
                                 onClick={(e) => {e.stopPropagation(); onDeleteFolder(folder.id)}} 
-                                className="text-gray-300 hover:text-red-500 p-0.5 hover:bg-gray-200 dark:hover:bg-slate-700 rounded"
+                                className="text-gray-300 hover:text-red-500 p-0.5 hover:bg-gray-200 dark:hover:bg-slate-700 rounded opacity-100 md:opacity-0 md:group-hover:opacity-100"
                                 title="Delete Folder"
                              >
                                  <Trash2 size={12}/>
                              </button>
                              <button 
                                 onClick={(e) => {e.stopPropagation(); onCreateDoc(folder.id)}} 
-                                className="text-gray-300 hover:text-gray-600 dark:hover:text-slate-200 p-0.5 hover:bg-gray-200 dark:hover:bg-slate-700 rounded"
+                                className="text-gray-300 hover:text-gray-600 dark:hover:text-slate-200 p-0.5 hover:bg-gray-200 dark:hover:bg-slate-700 rounded opacity-100 md:opacity-0 md:group-hover:opacity-100"
                                 title="Add Doc to Folder"
                              >
                                  <Plus size={14}/>
