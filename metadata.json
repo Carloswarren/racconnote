@@ -1,0 +1,5 @@
+{
+  "name": "MemNote AI",
+  "description": "A hierarchical note-taking and flashcard application inspired by RemNote, featuring AI-powered card generation and spaced repetition study modes.",
+  "requestFramePermissions": []
+}
